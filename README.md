@@ -1,101 +1,121 @@
-## MongoDB Netflix Clone
+# Atlas Search Workshop
+## Steps
+### 1. Add sample data to your MongoDB Atlas cluster
 
-<h3>Atlas Search Workshop
-</h3>
+If you haven't already sone so, [create an Atlas cluster](https://cloud.mongodb.com/).
 
-Hello! 👋 This movie search application allows you to search lightning fast through a wide variety of data types through the sample_mflix.movies dataset offered free to download on MongoDB Atlas.
+Make sure at least 1 user with read-write has been added.
 
-<br/>
-<div align="center">
-<img src="Mflix.png" width="650"  />
-</div>
-<br/>
+Make sure that IP Access List allows access (add `Allow ACCESS FROM ANYWHERE`(`0.0.0.0\0`) to be sure).
 
-<p> The MongoDB Netflix Clone implements many Atlas Search features from autocomplete to custom function scoring. Using the $search operator in a MongoDB aggregation pipeline, we can build fine-grained searches across text, numerics, and geospatial data. By building out this application, you'll learn all sorts of ways MongoDB allows you to build complex, fine-grained full-text searches on your Atlas data.</p>
+Add sample data:
+- Click the `...` next to your cluster in the Atlas UI
+- Select `Load Sample Dataset`
 
-**No additional servers or software needed. No need to keep data in sync. Everything is done in MongoDB Atlas.**
+It will take a few minutes for the sample data to be added.
 
-Current features implemented in this Movie Search Engine demo application include:
+### 2. Add default Search index
+- Keep the name as `default`
+- Databse: `sample_mflix`
+- Collection: `movies`
+- Leave `Dynamic Mapping` turned on
 
-- fuzzy matching
-- highlighting
-- autocomplete
-- relevance-based scoring
-- custom function scoring
+### 3. Add autocomplete index
+- Set the name to `autocomplete`
+- Turn off `Dynamic Mapping`
+- Click `Refine Your Index`
+- Add a new field mapping for the `title` field with a `Data Type` of `Autocomplete`
 
-Future Atlas Search features to implement can include:
+### 4. (OPTIONAL) Connect MongoDB Compass
+You can get the URL from the Atlas UI - click the `Connect` button next to your cluster.
 
-- [ ] facets
-- [ ] synonyms
+Paste the URL into the Compass connection box, replacing the username and password.
 
-<h2 align="center"><a href="netflixclone-xwaaq.mongodbstitch.com/">netflixclone-xwaaq.mongodbstitch.com</a></h2>
+### 5. Create aggregation pipeline to search for movies
+From Compass (or the Atlas UI), navigate to the `Aggregation` pane.
 
-<p>This application was created using:</p>
+Create these stages in sequence:
 
-- React
-- MongoDB Realm for backend HTTPs endpoints and webhooks
-- The Atlas sample dataset of sample_mflix.movies
+#### a. `$search`
+```
+{
+  index: 'default',
+  text: {
+    query: 'Indiana Ones',
+    path: ['plot', 'fullplot', 'title'],
+    fuzzy: {}
+  },
+  highlight: {path: 'fullplot'}
+}
+```
 
-<h3>API Points of Integration</h3>
-This application is hosted entirely on Realm and calls 2 API endpoints:
- 
- * getProductsEndpoint in the Home.js page on line 24
- * Suggestions_AC_Endpoint, used for autocompleted product names, in the Header.js component on line 17.
+#### b. `$limit`
+```
+12
+```
 
-<p><em>Currently this app is not suitable for mobile, but feel free to send a PR.</em> 😊</p>
+#### c. `$project`
+```
+{
+  title: 1,
+  year: 1,
+  poster: 1,
+  plot: 1, 
+  imdb: 1,
+  score: {$meta: 'searchScore'},
+  highlights: {
+    '$meta': 'searchHighlights'
+  }
+}
+```
 
-<h3>Prerequisites</h3>
+- Click `EXPORT TO LANGUAGE`
+- Choose `NODE` as the export language
+- Copy the code and keep it safe
+- Save the pipeline if using Compass
 
-- A MongoDB Atlas account. Get one for free <a href="https://www.mongodb.com/cloud/atlas">here.</a>
-- A recent version of Node.js and npm.
-- Atlas sample dataset
-- (Recommended) <a href="https://www.mongodb.com/try/download/compass">MongoDB Compass - GUI</a>
+### 6. Create and test a https endpoint to search for movies
+- Create a new Atlas App Service and name it `Movies`.
+- Select `Functions` and then `Create New Function`.
+- Set `Authentication` to `System`, and then `Save Draft`.
+- Use this template for the function code:
+```
+exports = async function({ query, headers, body}, response) {
+    
+    // GET A HANDLE TO THE MOVIES COLLECTION
+    const moviesCollection = context.services.get("mongodb-atlas").db("sample_mflix").collection("movies");
+    
+    // GET SEARCHTERM FROM QUERY PARAMETER. IF NONE, RETURN EMPTY ARRAY
+    let searchTerm = query.searchTerm;
+    if (!query.searchTerm || searchTerm === ""){
+         return [];
+    }
+  
+    const searchAggregation = [];  
+    return await moviesCollection.aggregate(searchAggregation).toArray();
+};
+```
+- Replace the `[]` for `searchAggregation` with your aggregation pipeline
+- Replace `Indiana Ones` with `searchTerm`
+- `Save Draft`
+- Select `HTTPS Endpoints`
+- `Add An Endpoint`
+- `Route`: `/movies'
+- `HTTP Method`: `GET`
+- Enable `Respond With Result`
+- `Function`: the function you just created
+- `Save Draft`
+- `REVIEW DRAFT & DEPLOY`
+- Copy the URL -> `<baseURL>`
+- From a browser, paste the URL into the location bar (`<baseURL>?searchTerm=blues`). This will search for movies that mention `blues` - replace it with your own string (using `%20` for spaces - e.g., `blues%20brothers`)
 
-<p>This application is hosted entirely by MongoDB Atlas was created using:</p>
 
-- React
-- MongoDB Realm for backend HTTPs endpoints and webhooks
-- MongoDB's Atlas sample_mflix dataset
 
-<p float="left">
-    <img src="NetflixArchitecture.png" width="750"  />
-</p>
+## OPTIONAL: To Build and Run This Application....
 
-<h2>Prepare Data</h2>
+1. Clone the repo
+2. Navigate inside directory
+3. Run `npm install`
+4. Run `npm start`
 
-<ol>
-<li> Load data to Atlas cluster:
-<ul>
-<li>database: <code>sample_mflix</code></li>
-<li>collection: <code>movies</code></li>
-</ul>
-</li>
-
-<li> Create Search indexes.</li>
-</ol>
-
-<h2>To Build and Run This Application....</h2>
-
-1. Clone the repo.
-2. Navigate inside directory.
-3. Run <code>npm install</code> .
-4. Run <code>npm start </code> .
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### Atlas Search Workshop:
-
-https://www.atlassearchworkshop.com
-
-React Components:
-<br/>
-
-<div align="center">
-<img src="SearchArchitecture.png" width="700"  />
-</div>
-<br/>
-
-If you have any questions or feedback about this repo, feel free to create an Issue or PR in this repo or reach out to me on Twitter @YouOldMaid.
-
-Also please join our online <a href="https://developer.mongodb.com/community/forums/">MongoDB Community</a> to interact with our product and engineering teams along with thousands of other MongoDB and Realm users. <br/><br/>Have fun and happy coding!
+Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
