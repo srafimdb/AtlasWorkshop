@@ -175,9 +175,17 @@ exports = async function({ query, headers, body}, response) {
 
 ## OPTIONAL: Use your new API from a REACT web app
 
-1. Clone the repo
-2. Navigate inside directory
-3. Run `npm install`
-4. Run `npm start`
+This repo includes a REACT movie-search web app which is able to use the two HTTP endpoints you've just created.
 
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+To download and start the app:
+```bash
+git clone git@github.com:ClusterDB/AtlasSearchWorkshop.git
+cd AtlasSearchWorkshop
+npm install
+npm start
+```
+The web app should open in a browser window. If you try searching for anything, you should get a message that you need to set up the HTTPS endpoints.
+
+To make the app work, you need to add your endpoints to `src/components/Home.js` (line 22) and `src/components/SearchBar/SearchBar.js` (line 15).
+
+When you save the files, the app should rebuild - you may need to refresh the browser window.
