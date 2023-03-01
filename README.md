@@ -79,7 +79,7 @@ Create these stages in sequence:
 - Select `Functions` and then `Create New Function`.
 - Set `Authentication` to `System`, and then `Save Draft`.
 - Use this template for the function code:
-```
+```js
 exports = async function({ query, headers, body}, response) {
     
     // GET A HANDLE TO THE MOVIES COLLECTION
@@ -141,7 +141,7 @@ Create these stages in sequence:
 - Select `Functions` and then `Create New Function`.
 - Set `Authentication` to `System`, and then `Save Draft`.
 - Use this template for the function code:
-```
+```js
 exports = async function({ query, headers, body}, response) {
   
   // GET A HANDLE TO THE MOVIES COLLECTION
