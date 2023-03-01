@@ -1,4 +1,5 @@
 # Atlas Search Workshop
+[Session slides](SearchWorkshopSlides.pdf)
 ## Steps
 ### 1. Add sample data to your MongoDB Atlas cluster
 
@@ -189,3 +190,7 @@ The web app should open in a browser window. If you try searching for anything, 
 To make the app work, you need to add your endpoints to `src/components/Home.js` (line 22) and `src/components/SearchBar/SearchBar.js` (line 15).
 
 When you save the files, the app should rebuild - you may need to refresh the browser window.
+
+## Final demo
+
+A quick demo of some of the features of Atlas Search (including the queries) using [Restaurant Finder](https://www.atlassearchrestaurants.com/). Code can be found [here](https://github.com/mongodb-developer/WhatsCooking).
