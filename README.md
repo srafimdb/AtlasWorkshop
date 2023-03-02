@@ -5,7 +5,7 @@
 
 If you haven't already sone so, [create an Atlas cluster](https://cloud.mongodb.com/).
 
-Make sure at least 1 user with read-write has been added.
+Make sure at least 1 user with read-write access has been added.
 
 Make sure that IP Access List allows access (add `Allow ACCESS FROM ANYWHERE`(`0.0.0.0\0`) to be sure).
 
