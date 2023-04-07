@@ -29,6 +29,7 @@ Add sample data:
 
 It will take a few minutes for the sample data to be added.
 
+## Search
 ### 2. Add default Search index
 - Keep the name as `default`
 - Databse: `sample_mflix`
