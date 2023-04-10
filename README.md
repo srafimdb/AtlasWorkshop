@@ -87,6 +87,7 @@ Navigate to the Aggregation tab. in your collection, we will be using the ```sam
 #### a. Query 1
 
 Group the listing views and group by real estate type using the $group command. Then sort by most popular. Sorting is done via a "1" or "-1" for denoting order of ascending/descending, respectively.
+
 `$group`
 ```
 {
@@ -103,6 +104,41 @@ Group the listing views and group by real estate type using the $group command. 
     'totalViews': -1
 }
 ```
+
+#### b. Query 2
+
+Let's calculate now popularity by property type, but restricting it to an area of 100 Km around New York City. MongoDB Aggregation Framework has a pipeline philosophy, which may remind some people of the way Unix Pipelines Work: there is a list of ordered stages and the input of every stage is the input of the next one. This way processing is modular and easier to reason about, particularly with the aid of Compass Aggregation Builder.
+
+`$match` - STAGE 1: FILTER TO PROPERTIES NEAR NEW YORK
+```
+{
+    '_id.address.location':  { 
+        '$geoWithin': { 
+            '$centerSphere': [ [ -73.9667, 40.78], 100/6378.137 ]
+         }
+     }
+}
+```
+
+`$group` - STAGE 2: GROUP BY PROPERTY TYPE AND AGGREGATE
+```
+{
+    '_id': '$_id.property_type',
+    'avgViews': {
+        '$avg': '$viewsCount'
+    }
+}
+```
+
+`$sort` -  STAGE 3: SORT IN DESCENDING ORDER
+```
+{
+    'totalViews': -1
+}
+```
+
+HOMEWORK: We encourage you to checkout this [book](https://www.practical-mongodb-aggregations.com/) to learn more about aggregations. This is a free resource available to the general public. We would love to hear your feedback and use cases on how you use Aggregation Framework in the future. 
+
 
 ## Search
 ### 1. Navigate to the Search Index configuration page on the Atlas UI 
