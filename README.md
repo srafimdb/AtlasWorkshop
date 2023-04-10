@@ -90,13 +90,9 @@ Calculate how many extra guests you can have for each property and add that as a
 
 ```
 addextra = { $set: { numguestsextra : { $subtract: ["$accommodates","$guests_included"]}}}
-
 db.listingsAndReviews.aggregate([addextra]).pretty()
-
 extraguestcost = { $multiply : ["$extra_people","$numguestsextra"]}
-
 finaloutput = { $project: { price: 1 , maxprice: { $add: [ "$price",extraguestcost]}}}
-
 db.listingsAndReviews.aggregate([addextra,finaloutput]).pretty()
 ```
 
