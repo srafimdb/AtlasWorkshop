@@ -87,7 +87,8 @@ Navigate to the Aggregation tab. in your collection, we will be using the ```sam
 #### a. Query 1
 
 Group the listing views and group by real estate type using the $group command. Then sort by most popular. Sorting is done via a "1" or "-1" for denoting order of ascending/descending, respectively.
-`$group````
+`$group`
+```
 {
     '_id': '$_id.property_type',
     'avgViews': {
@@ -96,7 +97,8 @@ Group the listing views and group by real estate type using the $group command. 
  }
     
 ```
-`$sort````
+`$sort`
+```
 {
     'totalViews': -1
 }
