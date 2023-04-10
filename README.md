@@ -84,25 +84,22 @@ db.find({"address.market":"Hong Kong", "property_type" : "Apartment", "bedrooms"
 
 Navigate to the Aggregation tab. in your collection, we will be using the ```sample_airbnb``` collection. 
 
-#### e. Query 1
+#### a. Query 1
 
 Group the listing views and group by real estate type using the $group command. Then sort by most popular. Sorting is done via a "1" or "-1" for denoting order of ascending/descending, respectively.
+`$group````
+{
+    '_id': '$_id.property_type',
+    'avgViews': {
+        '$avg': '$viewsCount'
+     }
+ }
+    
 ```
-    {
-        '$group': {
-            '_id': '$_id.property_type',
-            'avgViews': {
-                '$avg': '$viewsCount'
-            }
-        }
-    }
-```
-```
-    {
-        '$sort': {
-            'totalViews': -1
-        }
-    }
+`$sort````
+{
+    'totalViews': -1
+}
 ```
 
 ## Search
