@@ -29,6 +29,16 @@ Add sample data:
 
 It will take a few minutes for the sample data to be added.
 
+## MongoDB Queries
+### 1. Compass
+
+Navigate to the Search bar in your collection, we will be using the ```sample_airbnb``` collection. If you do not have Compass, we can use the Data Explorer UI for the remainder of this session. 
+
+## Aggregation Framework
+### 1. Compass
+
+Navigate to the Aggregation tab. in your collection, we will be using the ```sample_airbnb``` collection. 
+
 ## Search
 ### 2. Add default Search index
 - Keep the name as `default`
