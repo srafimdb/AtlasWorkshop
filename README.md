@@ -35,9 +35,49 @@ It will take a few minutes for the sample data to be added.
 Navigate to the Search bar in your collection, we will be using the ```sample_airbnb``` collection. If you do not have Compass, we can use the Data Explorer UI for the remainder of this session. Alternatively, we can also use the command line if you have ```mongosh``` installed. 
 
 #### a. Query 1
+
+Find all properties in the database with text filter:
+Market in Hong Kong: {"address.market":"Hong Kong" } and is an Apartment : {"property_type" :"Apartment"}
+To specify equality conditions, use : expressions in the query filter document.
 ```json
 {"address.market":"Hong Kong", "property_type" : "Apartment"}
 ```
+
+#### b. Query 2
+
+Find all properties in the database with a range based filter:
+have at least three bedrooms: {"bedrooms": {"gte" : 3}}  and price range from 1,300 to 1,500: "price": {"gte" : 3}}  and price range from 1,300 to 1,500: "price": {"gte": 1300, "$lte": 1500}
+```json
+{ "bedrooms": {"$gte": 3}, "price": {"$gte": 1400, "$lte": 1500}}
+```
+
+#### c. Query 3
+
+Find all properties in the database with a field that is inside an array:
+Has both Wifi and Kitchen: { "amenities": { "$all": ["Wifi", "Kitchen"] }}
+When specifying compound conditions on array elements, you can specify the query such that either a single array element meets these condition or any combination of array elements meets the conditions.
+```json
+{ "amenities": { "$all": ["Wifi", "Kitchen"]}}
+```
+
+
+#### d. Query 4
+
+Find all properties in the database with combination of elements:
+Market in Hong Kong: {"address.market":"Hong Kong" } and is an Apartment : {"property_type" :"'Apartment"}
+Has at least three bedrooms: {"bedrooms": {"gte" : 3}} and price range from 1,300 to 1,500: "price": {"gte" : 3}} and price range from 1,300 to 1,500: "price": {"gte": 1300, "$lte": 1500}
+Has both Wifi and Kitchen: { "amenities": { "$all": ["Wifi", "Kitchen"] }}
+```json
+{"address.market":"Hong Kong", "property_type" : "Apartment", "bedrooms": {"$gte": 3}, "price": {"$gte": 1400, "$lte": 1500}, "amenities": { "$all": ["Wifi", "Kitchen"]}}
+```
+
+#### e. Query 5 (Applicaable for Compass or CMD Line)
+
+In this example, run .explain() to returns the queryPlanner information for the evaluated method. Navigate to the Explain tab in compass to see query execution. Alternatively, use the command line. 
+```js
+db.find({"address.market":"Hong Kong", "property_type" : "Apartment", "bedrooms": {"$gte": 3}, "price": {"$gte": 1400, "$lte": 1500}, "amenities": { "$all": ["Wifi", "Kitchen"]}}).explain()
+```
+
 
 ## Aggregation Framework
 ### 1. Compass
