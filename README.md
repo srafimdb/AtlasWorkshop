@@ -32,7 +32,12 @@ It will take a few minutes for the sample data to be added.
 ## MongoDB Queries
 ### 1. Compass
 
-Navigate to the Search bar in your collection, we will be using the ```sample_airbnb``` collection. If you do not have Compass, we can use the Data Explorer UI for the remainder of this session. 
+Navigate to the Search bar in your collection, we will be using the ```sample_airbnb``` collection. If you do not have Compass, we can use the Data Explorer UI for the remainder of this session. Alternatively, we can also use the command line if you have ```mongosh``` installed. 
+
+#### a. Query 1
+```js
+docs = find({"address.market":"Hong Kong", "property_type" : "Apartment"})
+```
 
 ## Aggregation Framework
 ### 1. Compass
@@ -40,6 +45,8 @@ Navigate to the Search bar in your collection, we will be using the ```sample_ai
 Navigate to the Aggregation tab. in your collection, we will be using the ```sample_airbnb``` collection. 
 
 ## Search
+### 1. Navigate to the Search Index configuration page on the Atlas UI 
+
 ### 2. Add default Search index
 - Keep the name as `default`
 - Databse: `sample_mflix`
