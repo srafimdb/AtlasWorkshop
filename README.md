@@ -80,61 +80,46 @@ db.listingsAndReviews.find({"address.market":"Hong Kong", "property_type" : "Apa
 
 
 ## Aggregation Framework
-### 1. Compass
+### 1. Compass / CMD
 
-Navigate to the Aggregation tab. in your collection, we will be using the ```sample_airbnb``` collection. 
+Navigate to your command lind or you can use the command line in MongoDB Compass, we will be using the ```sample_airbnb``` collection. 
 
 #### a. Query 1
 
-Group the listing views and group by real estate type using the $group command. Then sort by most popular. Sorting is done via a "1" or "-1" for denoting order of ascending/descending, respectively.
+Calculate how many extra guests you can have for each property and add that as a field using $set. Calculate how much it would cost with these extra guests. $project the basic price and the price if fully occupied with $accommodates people. 
 
-`$group`
 ```
-{
-    '_id': '$_id.property_type',
-    'avgViews': {
-        '$avg': '$viewsCount'
-     }
- }
-    
-```
-`$sort`
-```
-{
-    'totalViews': -1
-}
+unwindstage = { $unwind:"$amenities"}
+group = { $group: { _id: "$amenities", count: { $sum: 1 } } } 
+sortstage = {$sort:{count:-1}}
+limitstage = { $limit : 10 }
+pipe=[unwindstage,group,sortstage, limitstage]
+db.listingsAndReviews.aggregate( pipe ).pretty()
 ```
 
 #### b. Query 2
 
-Let's calculate now popularity by property type, but restricting it to an area of 100 Km around New York City. MongoDB Aggregation Framework has a pipeline philosophy, which may remind some people of the way Unix Pipelines Work: there is a list of ordered stages and the input of every stage is the input of the next one. This way processing is modular and easier to reason about, particularly with the aid of Compass Aggregation Builder.
+Calculate how many Airbnb properties there are in each country, ordered by count, list the one with the largest count first.
 
-`$match` - STAGE 1: FILTER TO PROPERTIES NEAR NEW YORK
 ```
-{
-    '_id.address.location':  { 
-        '$geoWithin': { 
-            '$centerSphere': [ [ -73.9667, 40.78], 100/6378.137 ]
-         }
-     }
-}
+groupfield = "$address.country"
+groupstage = { $group: { _id: groupfield, count:{$sum:1}}}
+sortstage = {$sort:{count:-1}}
+pipe = [groupstage,sortstage]
+db.listingsAndReviews.aggregate(pipe).pretty()
 ```
 
-`$group` - STAGE 2: GROUP BY PROPERTY TYPE AND AGGREGATE
-```
-{
-    '_id': '$_id.property_type',
-    'avgViews': {
-        '$avg': '$viewsCount'
-    }
-}
-```
+#### c. Query 3
 
-`$sort` -  STAGE 3: SORT IN DESCENDING ORDER
+What are the top 10 most popular amenities across all listings?
+
 ```
-{
-    'totalViews': -1
-}
+unwindstage = { $unwind:"$amenities"}
+group = { $group: { _id: "$amenities", count: { $sum: 1 } } } 
+sortstage = {$sort:{count:-1}}
+limitstage = { $limit : 10 }
+pipe=[unwindstage,group,sortstage, limitstage]
+db.listingsAndReviews.aggregate( pipe ).pretty()
 ```
 
 HOMEWORK: We encourage you to checkout this [book](https://www.practical-mongodb-aggregations.com/) to learn more about aggregations. This is a free resource available to the general public. We would love to hear your feedback and use cases on how you use Aggregation Framework in the future. 
