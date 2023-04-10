@@ -1,5 +1,5 @@
-# Atlas Search Workshop
-[Session slides](SearchWorkshopSlides.pdf)
+# Atlas Workshop
+[Session slides -> WIP](SearchWorkshopSlides.pdf)
 
 ## Prerequisites
 Workshop attendees MUST bring their own personal laptop in order to actively participate in the workshop.
