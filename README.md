@@ -89,12 +89,15 @@ Navigate to your command lind or you can use the command line in MongoDB Compass
 Calculate how many extra guests you can have for each property and add that as a field using $set. Calculate how much it would cost with these extra guests. $project the basic price and the price if fully occupied with $accommodates people. 
 
 ```
-unwindstage = { $unwind:"$amenities"}
-group = { $group: { _id: "$amenities", count: { $sum: 1 } } } 
-sortstage = {$sort:{count:-1}}
-limitstage = { $limit : 10 }
-pipe=[unwindstage,group,sortstage, limitstage]
-db.listingsAndReviews.aggregate( pipe ).pretty()
+addextra = { $set: { numguestsextra : { $subtract: ["$accommodates","$guests_included"]}}}
+
+db.listingsAndReviews.aggregate([addextra]).pretty()
+
+extraguestcost = { $multiply : ["$extra_people","$numguestsextra"]}
+
+finaloutput = { $project: { price: 1 , maxprice: { $add: [ "$price",extraguestcost]}}}
+
+db.listingsAndReviews.aggregate([addextra,finaloutput]).pretty()
 ```
 
 #### b. Query 2
