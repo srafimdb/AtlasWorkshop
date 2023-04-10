@@ -71,7 +71,7 @@ Has both Wifi and Kitchen: { "amenities": { "$all": ["Wifi", "Kitchen"] }}
 {"address.market":"Hong Kong", "property_type" : "Apartment", "bedrooms": {"$gte": 3}, "price": {"$gte": 1400, "$lte": 1500}, "amenities": { "$all": ["Wifi", "Kitchen"]}}
 ```
 
-#### e. Query 5 (Applicaable for Compass or CMD Line)
+#### e. Query 5 (Applicable for Compass or CMD Line)
 
 In this example, run .explain() to returns the queryPlanner information for the evaluated method. Navigate to the Explain tab in compass to see query execution. Alternatively, use the command line. 
 ```js
@@ -83,6 +83,27 @@ db.find({"address.market":"Hong Kong", "property_type" : "Apartment", "bedrooms"
 ### 1. Compass
 
 Navigate to the Aggregation tab. in your collection, we will be using the ```sample_airbnb``` collection. 
+
+#### e. Query 1
+
+Group the listing views and group by real estate type using the $group command. Then sort by most popular. Sorting is done via a "1" or "-1" for denoting order of ascending/descending, respectively.
+```
+    {
+        '$group': {
+            '_id': '$_id.property_type',
+            'avgViews': {
+                '$avg': '$viewsCount'
+            }
+        }
+    }
+```
+```
+    {
+        '$sort': {
+            'totalViews': -1
+        }
+    }
+```
 
 ## Search
 ### 1. Navigate to the Search Index configuration page on the Atlas UI 
