@@ -1,5 +1,5 @@
 # Atlas Workshop
-[Session slides -> WIP](SearchWorkshopSlides.pdf)
+[Session slides](JPMC-Workshop-041223.pdf)
 
 ## Prerequisites
 Workshop attendees MUST bring their own personal laptop in order to actively participate in the workshop.
