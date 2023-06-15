@@ -6,7 +6,7 @@ Workshop attendees MUST bring their own personal laptop in order to actively par
 
 Please create a user account on MongoDB Atlas. 
 
-Accounts MUST be created using your personal email address, NOT your J.P.Morgan email.
+Accounts MUST be created using your personal email address, NOT your company email.
 
 Download and Install MongoDB Compass, this is verified MongoDB software. Please only use this official link.﻿
 
