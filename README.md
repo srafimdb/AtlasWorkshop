@@ -1,5 +1,5 @@
 # Atlas Workshop
-[Session slides](JPMC-Wilmington-Workshop-072723.pdf)
+[Session slides](JPMC-Houston-Workshop-102523.pdf)
 
 ## Prerequisites
 Workshop attendees MUST bring their own personal laptop in order to actively participate in the workshop.
