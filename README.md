@@ -1,8 +1,6 @@
 # Atlas Workshop
-[Session slides](JPMC-Houston-Workshop-102523.pdf)
 
 ## Prerequisites
-Workshop attendees MUST bring their own personal laptop in order to actively participate in the workshop.
 
 Please create a user account on MongoDB Atlas. 
 
@@ -10,14 +8,12 @@ Accounts MUST be created using your personal email address, NOT your company ema
 
 Download and Install MongoDB Compass, this is verified MongoDB software. Please only use this official link.﻿
 
-Attendees must connect to the JPMC-GUEST-NETWORK on their personal laptop for the workshop.
 
-Ability to install binaries on your personal laptop - NodeJS, Python pip3 etc.
 
 ## Steps
 ### 1. Add sample data to your MongoDB Atlas cluster
 
-If you haven't already sone so, [create an Atlas cluster](https://cloud.mongodb.com/).
+If you haven't already done so, [create an Atlas cluster](https://cloud.mongodb.com/).
 
 Make sure at least 1 user with read-write access has been added.
 
