@@ -1,4 +1,4 @@
-# Atlas Workshop
+# DELTA  Atlas Workshop
 
 ## Prerequisites
 
